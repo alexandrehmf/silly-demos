@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import pygame as pg
+
+WIDTH = 640
+HEIGHT = 480
+
+pg.init()
+screen = pg.display.set_mode((WIDTH,HEIGHT))
+background = pg.Surface((WIDTH,HEIGHT))
+screens = pg.Surface((WIDTH,HEIGHT))
+screens = screens.convert()
+#background.fill((255,255,255))
+background = background.convert()
+
+clock = pg.time.Clock()
+font = pg.font.SysFont('mono', 20, bold=True)
+arbitrary = pg.Surface((100,22))
+
+posx = 0
+posy = HEIGHT / 2.0
+vely = 0.0
+
+mainloop = True
+while mainloop:
+  for event in pg.event.get():
+    if event.type == pg.QUIT:
+      print("bye")
+      mainloop = False
+    if event.type == pg.KEYDOWN:
+      if event.key == pg.K_SPACE:
+        posy += 25
+
+  arbitrary.fill((0,0,0))
+  arbitrary = font.render("%f"%clock.get_fps(),True,(15,185,15))
+  background.fill((1,1,1))
+  posx += 3
+  vely += ((HEIGHT//2)-posy)/100.0
+  if posx > WIDTH:
+    posx = 0
+  posy += vely
+  pg.draw.circle(screens,(150,255,150),(posx,int(posy)),3)
+  screens.blit(background,(0,0),(0,0,WIDTH,HEIGHT),pg.BLEND_SUB)
+  screen.blit(screens,(0,0))
+  screen.blit(arbitrary,(0,0))
+  pg.display.flip()
+  clock.tick()
+  
+pg.quit()
