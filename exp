@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import pygame as pg
 
 pg.init()
@@ -7,10 +6,10 @@ screen = pg.display.set_mode((640,480))
 bgnd = pg.Surface(screen.get_size())
 bgnd.fill((20,160,20))
 bgnd = bgnd.convert()
-screen.blit(bgnd,(0,0))
 
 clock = pg.time.Clock()
 poins = []
+curcir = pg.mouse.get_pos()
 
 mainloop = True
 while mainloop:
@@ -21,12 +20,16 @@ while mainloop:
     if event.type == pg.QUIT:
       mainloop = False
     if event.type == pg.MOUSEMOTION:
-      pg.draw.circle(screen,(160,160,20),event.pos,25)
-      print(event)
+      curcir = event.pos
+      if event.buttons[0] == 1:
+        poins.append(event.pos)
     if event.type == pg.MOUSEBUTTONDOWN:
       poins.append(event.pos)
-      
-  for p in poins:
+    print(event)
+
+  pg.draw.circle(screen,(160,160,20),curcir,25)
+  for i,p in enumerate(poins):
+    poins[i]=(p[0],p[1]+1)
     pg.draw.circle(screen,(160,160,20),p,25)
   pg.display.flip()
   clock.tick(60)
