@@ -10,6 +10,7 @@ bgnd = bgnd.convert()
 clock = pg.time.Clock()
 poins = []
 curcir = pg.mouse.get_pos()
+scroll = 0;
 
 mainloop = True
 while mainloop:
@@ -19,17 +20,22 @@ while mainloop:
   for event in pg.event.get():
     if event.type == pg.QUIT:
       mainloop = False
-    if event.type == pg.MOUSEMOTION:
+    elif event.type == pg.MOUSEMOTION:
       curcir = event.pos
       if event.buttons[0] == 1:
         poins.append(event.pos)
-    if event.type == pg.MOUSEBUTTONDOWN:
+    elif event.type == pg.MOUSEBUTTONDOWN:
       poins.append(event.pos)
-    print(event)
+    elif event.type == pg.KEYDOWN:
+      if event.key == pg.K_DOWN:
+        scroll +=1
+      elif event.key == pg.K_UP:
+        scroll -=1
+    #print(event)
 
   pg.draw.circle(screen,(160,160,20),curcir,25)
   for i,p in enumerate(poins):
-    poins[i]=(p[0],p[1]+1)
+    poins[i]=(p[0],p[1]+scroll)
     pg.draw.circle(screen,(160,160,20),p,25)
   pg.display.flip()
   clock.tick(60)
