@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+import pygame as pg
+
+pg.init()
+screen = pg.display.set_mode((640,480))
+
+bgnd = pg.Surface(screen.get_size())
+bgnd.fill((20,100,20))
+bgnd = bgnd.convert()
+
+aqua = pg.Surface((256,256))
+aqua.fill((20,100,100))
+aqua = aqua.convert()
+aqua.set_at((0,0),(0,0,0))
+
+font = pg.font.SysFont('mono',12,bold=True)
+aqua.blit(font.render('aqua',True,(100,20,100)),(128-12,128-6))
+
+aqcn = (320,240)
+aqmh = 0
+aqmv = 0
+mvin = 2
+clock = pg.time.Clock()
+
+mainloop = True
+while mainloop:
+  for event in pg.event.get():
+    if event.type == pg.QUIT:
+      mainloop = False
+    if event.type == pg.KEYDOWN:
+      if event.key == pg.K_RIGHT:
+        aqmh += mvin
+      if event.key == pg.K_LEFT:
+        aqmh -= mvin
+      if event.key == pg.K_UP:
+        aqmv -= mvin
+      if event.key == pg.K_DOWN:
+        aqmv += mvin
+    if event.type == pg.KEYUP:
+      if event.key == pg.K_RIGHT:
+        aqmh -= mvin
+      if event.key == pg.K_LEFT:
+        aqmh += mvin
+      if event.key == pg.K_UP:
+        aqmv += mvin
+      if event.key == pg.K_DOWN:
+        aqmv -= mvin
+    #print(event)
+  aqcn = (aqcn[0]+aqmh,aqcn[1]+aqmv)
+
+  screen.blit(bgnd,(0,0))
+  screen.blit(aqua,(aqcn[0]-128,aqcn[1]-128))
+  pg.display.flip()
+  clock.tick(60)
+
+pg.quit()
