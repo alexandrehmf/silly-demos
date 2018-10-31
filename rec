@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+import numpy as np
+import pyscreenshot as ss
+import cv2 as cv
+
+def rota(src):
+  tated = np.zeros((src.shape[1],src.shape[0],3),dtype=np.int16)
+  for i in range(src.shape[1]):
+    tated[i]=src[:,i,:]
+  return np.array(tated,dtype=np.int8)
+
+img = ss.grab()
+cv.imshow(img)
+cv.waitKey('0')
+array = np.array(img)
+print(array.shape)
+array = rota(array)
+print(array.shape)
+fourcc = cv.VideoWriter_fourcc(*'DIVX')
+out = cv.VideoWriter('output.avi',fourcc, 6, array.shape[:2])
+
+n = 0
+while n < 6:
+  out.write(array)
+  img = ss.grab()
+  array = np.array(img)
+  array = rota(array)
+  n += 1
+
+out.release()
